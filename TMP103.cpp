@@ -1,4 +1,5 @@
 #include "TMP103.h"
+#include "Wire.h"
 
 TMP103::TMP103() {
     Wire.begin()
@@ -13,11 +14,18 @@ uint8_t get_address(void) {
 }
 
 uint8_t TMP103::read_register(uint8_t rtc_register) {
+    uint8_t ack;
+    Wire.beginTransmission(_address);
     return Wire.read();
+    ack = Wire.endTransmission()
 }
 
 uint8_t TMP103::write_register(uint8_t rtc_register, uint8_t data) {
+
+    uint8_t ack;
+    Wire.beginTransmission(_address);
     Wire.write(data);
+    ack = Wire.endTransmission()
     //Wire.write(data, length);
     return true;
 }

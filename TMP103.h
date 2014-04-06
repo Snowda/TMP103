@@ -1,5 +1,5 @@
-#ifndef AB1850_h
-#define AB1850_h
+#ifndef TMP103_h
+#define TMP103_h
 #include <Arduino.h>
 #include <wire.h>
 #include "stdint.h"
