@@ -14,7 +14,17 @@
 #define TMP103H                 0xF7 //1110111
 
 #define TEMPERATURE_REGISTER    0x00
+#define CONFIG_REGISTER         0x01
+#define TLOW_REGISTER           0x02
+#define THIGH_REGISTER          0x03
 #define HIGH_SPEED_COMMAND      0x07 //00001xxx
+#define MAX_TEMPERATURE         127
+#define MIN_TEMPERATURE         -55 //note that this is a negative value
+
+#define QUARTER_HZ              0x00 //0.25kHz
+#define ONE_HZ                  0x20 //1Hz
+#define FOUR_HZ                 0x40 //4Hz
+#define EIGHT_HZ                0x60 //8Hz
 
 class TMP103 {
     public:
@@ -27,9 +37,21 @@ class TMP103 {
         void get_temperature(void);
         void print_temperature(void);
         void reset(void);
+        void get_config(void);
+        void set_high_level(int8_t high_level);
+        void set_low_level(int8_t low_level);
+        void check_alarms(void);
+        void enable_alarm_latch(void);
+        void disable_alarm_latch(void);
+        void set_conversion_rate(int8_t rate);
+        void shutdown_sensor(void);
     private:
         uint8_t _address;
-        uint8_t _temperature;
+        int8_t _temperature; //signed
+        uint8_t _config_status;
+        bool _high_alarm;
+        bool _low_alarm;
+
 };
 
 #endif
