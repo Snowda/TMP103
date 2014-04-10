@@ -44,7 +44,9 @@ class TMP103 {
         void enable_alarm_latch(void);
         void disable_alarm_latch(void);
         void set_conversion_rate(int8_t rate);
-        void shutdown_sensor(void);
+        void shutdown_mode(void);
+        void one_shot_mode(void);
+        void continuous_mode(void);
     private:
         uint8_t _address;
         int8_t _temperature; //signed
