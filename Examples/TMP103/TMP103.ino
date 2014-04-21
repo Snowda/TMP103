@@ -1,3 +1,5 @@
+#include <Wire.h>
+
 // Demonstration Arduino sketch for TMP103 Temperature Sensor
 // 4/4/2013 original by Conor Forde <me@conorforde.com> at https://github.com/Snowda/TMP103
 //
@@ -18,7 +20,7 @@ void setup() {
     // join I2C bus (I2Cdev library doesn't do this automatically)
     Wire.begin();
 
-    temperature.set_address(TMP103A);
+    //temperature.set_address(TMP103A);
     // initialize serial communication
     // (38400 chosen because it works as well at 8MHz as it does at 16MHz, but
     // it's really up to you depending on your project)

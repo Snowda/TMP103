@@ -1,23 +1,24 @@
 #include "TMP103.h"
 #include "Wire.h"
-#include "Math.h"
 
 TMP103::TMP103() {
     Wire.begin();
+    //set_address(TMP103A);
     _config_status = 0x02; //hardware reset value
 }
 
+/*
 void set_address(uint8_t chip_address) {
     _address = chip_address;
 }
 
 uint8_t get_address(void) {
   return _address;
-}
+}*/ //fix all this yo
 
 uint8_t TMP103::read_register(uint8_t temp_register) {
-    uint8_t ack;
-    Wire.beginTransmission(_address);
+    uint8_t ack, returned_address, returned_data;
+    Wire.beginTransmission(TMP103A); //_address); //this is a hack that so needs fixing
     Wire.write(temp_register);
     returned_address = Wire.read();
     returned_data = Wire.read();
@@ -28,7 +29,7 @@ uint8_t TMP103::read_register(uint8_t temp_register) {
 uint8_t TMP103::write_register(uint8_t temp_register, uint8_t data) {
 
     uint8_t ack;
-    Wire.beginTransmission(_address);
+    Wire.beginTransmission(TMP103A); //_address); //this is a hack that so needs fixing
     Wire.write(temp_register);
     Wire.write(data);
     ack = Wire.endTransmission();
@@ -38,14 +39,14 @@ uint8_t TMP103::write_register(uint8_t temp_register, uint8_t data) {
 
 void TMP103::get_temperature(void) {
     int8_t raw_reading, calcd_reading;
-    raw_reading = read_register(TEMPERATURE_REGISTER) && register_mask;
+    raw_reading = read_register(TEMPERATURE_REGISTER);
     if(raw_reading & 0x80) {
         //calculate two's complement - todo
         calcd_reading = raw_reading;
     } else {
         calcd_reading = raw_reading;
     }
-    _temperature = fmax(fmin(MAX_TEMPERATURE, calcd_reading), MIN_TEMPERATURE);
+    _temperature = constrain(calcd_reading, MIN_TEMPERATURE, MAX_TEMPERATURE);
 }
 
 void TMP103::print_temperature(void) {
@@ -63,13 +64,13 @@ void TMP103::get_config(void) {
 
 void TMP103::set_high_level(int8_t high_level) {
     //validate input first
-    int8_t limit_level = fmax(fmin(MAX_TEMPERATURE, high_level), MIN_TEMPERATURE);
+    int8_t limit_level = constrain(high_level, MIN_TEMPERATURE, MAX_TEMPERATURE);
     write_register(THIGH_REGISTER, limit_level);
 }
 
 void TMP103::set_low_level(int8_t low_level) {
     //validate input first
-    int8_t limit_level = fmax(fmin(MAX_TEMPERATURE, low_level), MIN_TEMPERATURE);
+    int8_t limit_level = constrain(low_level, MIN_TEMPERATURE, MAX_TEMPERATURE);
     write_register(TLOW_REGISTER, limit_level);
 }
 

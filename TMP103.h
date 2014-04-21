@@ -29,10 +29,6 @@
 class TMP103 {
     public:
         TMP103();
-        void set_address(uint8_t chip_address);
-        uint8_t get_address(void);
-        uint8_t read_register(uint8_t temp_register);
-        uint8_t write_register(uint8_t temp_register, uint8_t data);
         uint8_t get_data(uint8_t temp_register, uint8_t register_mask);
         void get_temperature(void);
         void print_temperature(void);
@@ -40,7 +36,7 @@ class TMP103 {
         void get_config(void);
         void set_high_level(int8_t high_level);
         void set_low_level(int8_t low_level);
-        void check_alarms(void);
+        bool check_alarms(void);
         void enable_alarm_latch(void);
         void disable_alarm_latch(void);
         void set_conversion_rate(int8_t rate);
@@ -53,6 +49,10 @@ class TMP103 {
         uint8_t _config_status;
         bool _high_alarm;
         bool _low_alarm;
+        //void set_address(uint8_t chip_address);
+        //uint8_t get_address(void);
+        uint8_t read_register(uint8_t temp_register);
+        uint8_t write_register(uint8_t temp_register, uint8_t data);
 
 };
 
